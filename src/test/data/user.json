@@ -1,8 +1,8 @@
 {
-  "id" : 0,
-  "title" : "Playwright Testing",
-  "price" : 27.99,
-  "description" : "A guide to API testing",
-  "category" : "books",
-  "image" : "https://example.com/"
+  "id" : 23,
+  "title" : "Playwright Testing 1",
+  "price" : 28.99,
+  "description" : "A guide to API testing 1",
+  "category" : "books for API",
+  "image" : "https://example1.com/"
 }

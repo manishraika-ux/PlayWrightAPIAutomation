@@ -1,5 +1,6 @@
 package com.qa.Tests;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.playwright.APIResponse;
@@ -8,22 +9,18 @@ import com.qa.Base.BaseTest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
+import java.util.HashMap;
 import java.util.Map;
 
-public class PostRequestFromJsonFileTests extends BaseTest {
+public class PostRequestTestsFromPojoTests extends BaseTest {
     @Test
-    public void addProducts() throws IOException {
-        byte[] fileBytes = getJsonFile();
-        ObjectMapper mapper = new ObjectMapper();
+    public void addProducts() throws JsonProcessingException {
+        Map<String, Object> data = createData();
         String url = "https://fakestoreapi.com/products";
         APIResponse apiResponse = requestContext.post(url,
                 RequestOptions.create()
                         .setHeader("Accept",
-                                "application/json").setData(fileBytes));
+                                "application/json").setData(data));
         Assert.assertTrue(apiResponse.ok());
 
         System.out.println("Status code is " + apiResponse.status());
@@ -33,14 +30,24 @@ public class PostRequestFromJsonFileTests extends BaseTest {
         String response = apiResponse.text();
         System.out.println(response);
         // extracting data from response
+        ObjectMapper mapper = new ObjectMapper();
         JsonNode json = mapper.readTree(response);
         int id = json.get("id").asInt();
         Assert.assertEquals(id, 21);
+        String title = json.get("title").asText();
+        Assert.assertEquals(title, "Playwright Testing");
     }
 
-    public byte[] getJsonFile() throws IOException {
-        File file = new File("./src/test/data/user.json");
-        return Files.readAllBytes(file.toPath());
+    public Map<String, Object> createData() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("id", 0);
+        data.put("title", "Playwright Testing");
+        data.put("price", 25.99);
+        data.put("description", "A guide to API testing");
+        data.put("category", "books");
+        data.put("image", "https://example.com/");
+
+        return data;
     }
 
 }
