@@ -1,5 +1,8 @@
 package com.qa.Tests;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.playwright.APIResponse;
 import com.microsoft.playwright.options.RequestOptions;
 import com.qa.Base.BaseTest;
@@ -12,9 +15,9 @@ import java.util.Map;
 public class UpdateRequestTests extends BaseTest {
 
     @Test
-    public void updateProducts() {
+    public void updateProducts() throws JsonProcessingException {
         //Testing put request with JSON passing as String.
-        String json = "{\n" +
+        String jsonBody = "{\n" +
                 "  \"id\" : 0,\n" +
                 "  \"title\" : \"Playwright Testing\",\n" +
                 "  \"price\" : 27.99,\n" +
@@ -26,7 +29,7 @@ public class UpdateRequestTests extends BaseTest {
         APIResponse apiResponse = requestContext.put(url,
                 RequestOptions.create()
                         .setHeader("Accept",
-                                "application/json").setData(json));
+                                "application/json").setData(jsonBody));
         Assert.assertTrue(apiResponse.ok());
 
         System.out.println("Status code is " + apiResponse.status());
@@ -38,6 +41,9 @@ public class UpdateRequestTests extends BaseTest {
         } else {
             System.out.println("Still getting HTML! Check the URL.");
         }
-
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode json = mapper.readTree(apiResponse.text());
+        int id = json.get("id").asInt();
+        Assert.assertEquals(id, 21);
     }
 }

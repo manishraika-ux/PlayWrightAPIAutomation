@@ -33,10 +33,9 @@ public class PostRequestTests extends BaseTest {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode json = mapper.readTree(response);
         int id = json.get("id").asInt();
-        Assert.assertEquals(id,21);
-        String title= json.get("title").asText();
-        Assert.assertEquals(title,"Playwright Testing");
-
+        Assert.assertEquals(id, 21);
+        String title = json.get("title").asText();
+        Assert.assertEquals(title, "Playwright Testing");
     }
 
     public Map<String, Object> createData() {
