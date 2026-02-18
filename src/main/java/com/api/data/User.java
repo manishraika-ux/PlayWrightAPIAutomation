@@ -7,14 +7,16 @@ public class User {
     private String price;
     private String description;
     private String category;
+    private String email;
 
     public User(){ }
 
-    public User(String title, String price, String description, String category) {
+    public User(String title, String price, String description, String category, String email) {
         this.title = title;
         this.price = price;
         this.description = description;
         this.category = category;
+        this.email =email;
     }
 
     public String getId() {
@@ -56,6 +58,12 @@ public class User {
     public void setCategory(String category) {
         this.category = category;
     }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
 
     @Override
@@ -66,6 +74,7 @@ public class User {
                 ", price='" + price + '\'' +
                 ", description='" + description + '\'' +
                 ", category='" + category + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 }
