@@ -16,7 +16,7 @@ public class DeleteRequestTests extends BaseTest {
         Assert.assertTrue(apiResponse.ok());
 
         System.out.println("Status code is " + apiResponse.status());
-        System.out.println("Status Text is " + apiResponse.statusText());
+        System.out.println("product deleted status  " + apiResponse.statusText());
         String header = apiResponse.headers().get("content-type");
         System.out.println("Header content type is " + header);
         if (apiResponse.headers().get("content-type").contains("application/json")) {

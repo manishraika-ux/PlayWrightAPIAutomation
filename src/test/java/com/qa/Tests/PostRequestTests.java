@@ -1,5 +1,8 @@
 package com.qa.Tests;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.playwright.APIResponse;
 import com.microsoft.playwright.options.RequestOptions;
 import com.qa.Base.BaseTest;
@@ -11,7 +14,7 @@ import java.util.Map;
 
 public class PostRequestTests extends BaseTest {
     @Test
-    public void addProducts() {
+    public void addProducts() throws JsonProcessingException {
         Map<String, Object> data = createData();
         String url = "https://fakestoreapi.com/products";
         APIResponse apiResponse = requestContext.post(url,
@@ -21,19 +24,24 @@ public class PostRequestTests extends BaseTest {
         Assert.assertTrue(apiResponse.ok());
 
         System.out.println("Status code is " + apiResponse.status());
-        System.out.println("Status Text is " + apiResponse.statusText());
+        System.out.println("Product is  " + apiResponse.statusText());
         String header = apiResponse.headers().get("content-type");
         System.out.println("Header content type is " + header);
-        if (apiResponse.headers().get("content-type").contains("application/json")) {
-            System.out.println(apiResponse.text());
-        } else {
-            System.out.println("Still getting HTML! Check the URL.");
-        }
+        String response = apiResponse.text();
+        System.out.println(response);
+        // extracting data from response
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode json = mapper.readTree(response);
+        int id = json.get("id").asInt();
+        Assert.assertEquals(id,21);
+        String title= json.get("title").asText();
+        Assert.assertEquals(title,"Playwright Testing");
 
     }
-    public Map<String, Object> createData(){
+
+    public Map<String, Object> createData() {
         Map<String, Object> data = new HashMap<>();
-        data.put("id",0);
+        data.put("id", 0);
         data.put("title", "Playwright Testing");
         data.put("price", 25.99);
         data.put("description", "A guide to API testing");

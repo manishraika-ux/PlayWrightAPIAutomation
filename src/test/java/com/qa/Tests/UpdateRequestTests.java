@@ -13,16 +13,24 @@ public class UpdateRequestTests extends BaseTest {
 
     @Test
     public void updateProducts() {
-        Map<String, Object> data = createData();
+        //Testing put request with JSON passing as String.
+        String json = "{\n" +
+                "  \"id\" : 0,\n" +
+                "  \"title\" : \"Playwright Testing\",\n" +
+                "  \"price\" : 27.99,\n" +
+                "  \"description\" : \"A guide to API testing\",\n" +
+                "  \"category\" : \"books\",\n" +
+                "  \"image\" : \"https://example.com/\"\n" +
+                "}";
         String url = "https://fakestoreapi.com/products/21";
         APIResponse apiResponse = requestContext.put(url,
                 RequestOptions.create()
                         .setHeader("Accept",
-                                "application/json").setData(data));
+                                "application/json").setData(json));
         Assert.assertTrue(apiResponse.ok());
 
         System.out.println("Status code is " + apiResponse.status());
-        System.out.println("Status Text is " + apiResponse.statusText());
+        System.out.println("product updated status is  " + apiResponse.statusText());
         String header = apiResponse.headers().get("content-type");
         System.out.println("Header content type is " + header);
         if (apiResponse.headers().get("content-type").contains("application/json")) {
@@ -31,17 +39,5 @@ public class UpdateRequestTests extends BaseTest {
             System.out.println("Still getting HTML! Check the URL.");
         }
 
-    }
-
-    public Map<String, Object> createData() {
-        Map<String, Object> data = new HashMap<>();
-        data.put("id", 0);
-        data.put("title", "Playwright Testing");
-        data.put("price", 27.99);
-        data.put("description", "A guide to API testing");
-        data.put("category", "books");
-        data.put("image", "https://example.com/");
-
-        return data;
     }
 }
