@@ -1,5 +1,8 @@
 {
-  "name" : "testingAutomation",
-  "email" : "tesing@gmail.com",
-  "status" : "active"
+  "id" : 0,
+  "title" : "Playwright Testing",
+  "price" : 27.99,
+  "description" : "A guide to API testing",
+  "category" : "books",
+  "image" : "https://example.com/"
 }
